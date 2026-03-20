@@ -1,0 +1,142 @@
+======================================================================
+  INTERNATIONAL FAMILY OFFICE INTELLIGENCE
+  RAG Pipeline — Demo Query Results
+  Generated: March 21, 2026 03:31
+  Dataset: 235 records  |  LLM: llama-3.3-70b-versatile via Groq (free)
+  Embeddings: all-MiniLM-L6-v2  |  Vector DB: FAISS  |  Top-K: 8
+======================================================================
+
+----------------------------------------------------------------------
+  Q1  Which family offices focus on AI or technology with check sizes above $10M?
+  Purpose: Sector + financial filter
+----------------------------------------------------------------------
+
+  RETRIEVED RECORDS (8):
+  [0.495] Masayoshi Son Family Office | Asia-Pacific | AUM: $20,000M | Confidence: High
+  [0.458] Bezos Family Office (Bezos Center for innovation) | North America | AUM: $1,000M | Confidence: Medium
+  [0.422] Andreessen Family Office | North America | AUM: $3,000M | Confidence: High
+  [0.402] Sergey Brin Family Office | North America | AUM: $55,000M | Confidence: High
+  [0.388] Obrecht / Systrom Family Office | North America | AUM: $3,000M | Confidence: Medium
+  [0.387] Mohammed Al Futtaim Family Office | Middle East | AUM: $16,000M | Confidence: High
+  [0.386] MSD Partners (Michael Dell Family Office) | North America | AUM: $20,000M | Confidence: High
+  [0.383] Ito-Yokado Family Office (Seven & i Holdings) | Asia-Pacific | AUM: $15,000M | Confidence: High
+
+  ANSWER:
+
+  The family offices that focus on AI or technology with check sizes above $10M are:
+  
+  1. Masayoshi Son Family Office (check size: $100.0M to $5000.0M USD) - AI & Mega-Tech Venture
+  2. Sergey Brin Family Office (check size: $10.0M to $50.0M USD) - AI; Biotechnology; Space; Cleantech
+  3. MSD Partners (Michael Dell Family Office) (check size: $10.0M to $250.0M USD) - Technology; Healthcare; Real Estate; PE
+  4. Ito-Yokado Family Office (Seven & i Holdings) (check size: $20.0M to $300.0M USD) - while not exclusively focused on AI or technology, they have a significant presence in these areas through their operating companies.
+
+
+----------------------------------------------------------------------
+  Q2  Who are the most active SFO decision makers in Europe and what do they invest in?
+  Purpose: Region + FO type + executive intelligence
+----------------------------------------------------------------------
+
+  RETRIEVED RECORDS (8):
+  [0.516] Obrecht / Systrom Family Office | North America | AUM: $3,000M | Confidence: Medium
+  [0.512] Standard Industries (Rohatyn Family) | North America | AUM: $15,000M | Confidence: High
+  [0.510] Naspers/Koos Bekker Family Office | Africa | AUM: $15,000M | Confidence: High
+  [0.508] Soros Fund Management (Family Office mode) | North America | AUM: $25,000M | Confidence: High
+  [0.502] CPPIB (Canada Pension adjacent / Desmarais) | North America | AUM: $22,000M | Confidence: High
+  [0.499] Masayoshi Son Family Office | Asia-Pacific | AUM: $20,000M | Confidence: High
+  [0.491] Gerdau Family Office | Latin America | AUM: $12,000M | Confidence: High
+  [0.488] Zuckerberg Family Office (Chan Zuckerberg Initiative) | North America | AUM: $23,000M | Confidence: High
+
+  ANSWER:
+
+  Based on the provided records, the most active SFO decision makers in Europe are:
+  
+  1. Koos Bekker (Naspers/Koos Bekker Family Office) - invests in Media & Tech Conglomerate, with a focus on Internet Platforms, Media, Fintech, and OTT.
+  2. Kevin Systrom (Obrecht / Systrom Family Office) - invests in Consumer Tech & AI Venture, with a focus on AI, Consumer Apps, and Social Media.
+  3. David Winter (Standard Industries) - invests in Industrial & PE, with a focus on Construction Materials, PE, and Global Real Assets.
+  
+  These family offices have a geographic focus on Europe, among other regions.
+
+
+----------------------------------------------------------------------
+  Q3  Which family offices have high co-investment appetite and are open to ESG deals?
+  Purpose: Multi-field filter retrieval
+----------------------------------------------------------------------
+
+  RETRIEVED RECORDS (8):
+  [0.577] Ng Family Office (Far East Organization) | Asia-Pacific | AUM: $14,000M | Confidence: High
+  [0.545] Brenninkmeijer Family Office (COFRA Holding) | Europe | AUM: $12,000M | Confidence: High
+  [0.526] Kwek Family Office (Hong Leong Group) | Asia-Pacific | AUM: $20,000M | Confidence: High
+  [0.522] Newhouse Family Office (Advance Publications) | North America | AUM: $12,000M | Confidence: High
+  [0.519] Tisch Family Office (Loews / CBS) | North America | AUM: $18,000M | Confidence: High
+  [0.517] Phipps Family Office (Bessemer Trust) | North America | AUM: $140,000M | Confidence: High
+  [0.509] Jack Ma Family Office | Asia-Pacific | AUM: $20,000M | Confidence: High
+  [0.508] Al Shaya Family Office | Middle East | AUM: $6,000M | Confidence: High
+
+  ANSWER:
+
+  Based on the records, the following family offices have a medium co-investment appetite and are open to ESG deals:
+  
+  1. Brenninkmeijer Family Office (COFRA Holding) - Record 2 (ID: FO-049)
+     - Co-investment appetite: Medium
+     - ESG and impact focus: Yes
+  
+  2. Phipps Family Office (Bessemer Trust) - Record 6 (ID: FO-040)
+     - Co-investment appetite: Medium
+     - ESG and impact focus: Yes
+  
+  No family offices in the records have a high co-investment appetite. Only these two have a medium appetite and are open to ESG deals.
+
+
+----------------------------------------------------------------------
+  Q4  Show me family offices in the Middle East with AUM above $10 billion
+  Purpose: Geographic + AUM threshold
+----------------------------------------------------------------------
+
+  RETRIEVED RECORDS (8):
+  [0.539] Bin Laden Family Office (Saudi Binladin Group) | Middle East | AUM: $30,000M | Confidence: Medium
+  [0.531] Sheikh Mohammed Family Office (DIFC / Mubadala-adjacent) | Middle East | AUM: $300,000M | Confidence: High
+  [0.510] Aldar / Al Nahyan adjacent Family Office | Middle East | AUM: $400,000M | Confidence: High
+  [0.495] Mohammed Al Futtaim Family Office | Middle East | AUM: $16,000M | Confidence: High
+  [0.492] Al Shaya Family Office | Middle East | AUM: $6,000M | Confidence: High
+  [0.488] Riad Al Saif Family Office | Middle East | AUM: $3,500M | Confidence: High
+  [0.470] Meydan / Saif Belhasa Family Office | Middle East | AUM: $4,500M | Confidence: High
+  [0.461] Almajdouie Group Family Office | Middle East | AUM: $5,000M | Confidence: High
+
+  ANSWER:
+
+  Based on the retrieved records, the family offices in the Middle East with AUM above $10 billion are:
+  
+  1. Sheikh Mohammed Family Office (DIFC / Mubadala-adjacent) - Estimated AUM: $300.0B USD
+  2. Aldar / Al Nahyan adjacent Family Office - Estimated AUM: $400.0B USD
+  3. Bin Laden Family Office (Saudi Binladin Group) - Estimated AUM: $30.0B USD 
+  
+  These family offices meet the criteria of having AUM above $10 billion.
+
+
+----------------------------------------------------------------------
+  Q5  Which second-generation G2 family offices in Asia focus on real estate or infrastructure?
+  Purpose: Succession stage + region + sector
+----------------------------------------------------------------------
+
+  RETRIEVED RECORDS (8):
+  [0.552] Ng Family Office (Far East Organization) | Asia-Pacific | AUM: $14,000M | Confidence: High
+  [0.482] New World Development Family Office | Asia-Pacific | AUM: $42,000M | Confidence: Medium
+  [0.475] Riad Al Saif Family Office | Middle East | AUM: $3,500M | Confidence: High
+  [0.460] Sampoerna Family Office | Asia-Pacific | AUM: $5,000M | Confidence: Medium
+  [0.459] Al Shaya Family Office | Middle East | AUM: $6,000M | Confidence: High
+  [0.457] Kwek Family Office (Hong Leong Group) | Asia-Pacific | AUM: $20,000M | Confidence: High
+  [0.455] Siam Commercial Family (Sophonpanich) | Asia-Pacific | AUM: $8,000M | Confidence: High
+  [0.454] Chang Family Office (TSMC) | Asia-Pacific | AUM: $8,000M | Confidence: Medium
+
+  ANSWER:
+
+  Based on the records, the following second-generation (G2) family offices in Asia focus on real estate or infrastructure:
+  
+  1. New World Development Family Office (Record 2) - Focus on Real Estate & Retail, with a primary decision maker Henry Cheng Kar-shun (Chairman) and secondary decision maker Adrian Cheng (CEO, K11).
+  2. Riad Al Saif Family Office (Record 3) - Focus on Real Estate & Private Equity, with a primary decision maker Riad Al Saif (Principal).
+  
+  Both of these family offices are classified as G2, indicating they are in the second generation of family management.
+
+======================================================================
+  END OF DEMO
+======================================================================
