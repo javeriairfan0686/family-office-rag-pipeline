@@ -20,12 +20,30 @@ And get grounded, specific answers backed by real records.
 
 ## Stack
 
-| Component        | Choice              | Why                                                    |
-|------------------|---------------------|--------------------------------------------------------|
-| Vector Database  | ChromaDB            | Local, persistent, no API key, easy setup              |
-| Embedding Model  | all-MiniLM-L6-v2    | Fast, accurate, runs fully locally, free               |
-| LLM for answers  | Claude Sonnet       | Instruction-following, grounded responses              |
-| Chunking         | Record-as-document  | Each FO record = one rich text chunk (see below)       |
+| Component        | Choice                 | Why                                                         |
+|------------------|------------------------|-------------------------------------------------------------|
+| Vector Database  | FAISS (faiss-cpu)      | Lightweight, no DLL issues, works on all Python versions    |
+| Embedding Model  | all-MiniLM-L6-v2       | Fast, accurate, runs fully locally, free, ~90MB             |
+| LLM for answers  | Llama 3.3 70B (Groq)   | Free API, fast inference, highly capable                    |
+| Chunking         | Record-as-document     | Each FO record = one rich text chunk (see below)            |
+
+---
+
+## Why FAISS Instead of ChromaDB
+
+ChromaDB was the original choice but it requires Rust bindings and Microsoft
+Visual C++ Redistributable which caused DLL load failures on Windows with
+Python 3.11 and 3.14. FAISS (faiss-cpu) is a pure C++ library from Meta
+with reliable Windows support and no additional dependencies.
+
+FAISS stores vectors in a flat index file (fo_faiss.index) and metadata
+is stored separately in a JSON file (fo_metadata.json).
+
+## Why Groq Instead of Anthropic
+
+Groq provides a completely free API tier with no credit card required.
+The Llama 3.3 70B model available on Groq is highly capable and
+produces accurate, well-structured answers for intelligence queries.
 
 ---
 
@@ -38,10 +56,10 @@ maker, sectors, check sizes, portfolio companies, recent news, etc.
 This "record-as-document" approach works well here because:
 - Each record is already a self-contained intelligence unit
 - We want full records returned, not fragments
-- Average document is ~300-500 tokens — well within embedding limits
+- Average document is ~986 chars — well within embedding limits
 
-Metadata (region, AUM, check sizes, co-invest, ESG etc.) is stored separately
-in ChromaDB for fast pre-filtering if needed.
+Metadata (region, AUM, check sizes, co-invest, ESG etc.) is stored
+separately in fo_metadata.json for reference alongside retrieved results.
 
 ---
 
@@ -49,24 +67,33 @@ in ChromaDB for fast pre-filtering if needed.
 
 ### 1. Install dependencies
 ```
-pip install -r requirements.txt
+pip install faiss-cpu sentence-transformers groq pandas openpyxl numpy
 ```
 
 ### 2. Place your dataset file in this folder
 ```
-FO_FINAL_DATASET.xlsx
+FO FINAL DATASET.xlsx
 ```
 
-### 3. Set your Anthropic API key
+### 3. Get a free Groq API key
+Go to console.groq.com — sign up free, no credit card needed.
+Create an API key and copy it.
 
-Windows:
+### 4. Set your Groq API key
+
+Windows (PowerShell):
 ```
-set ANTHROPIC_API_KEY=your_key_here
+$env:GROQ_API_KEY="gsk_your_key_here"
+```
+
+Windows (CMD):
+```
+set GROQ_API_KEY=gsk_your_key_here
 ```
 
 Mac / Linux:
 ```
-export ANTHROPIC_API_KEY=your_key_here
+export GROQ_API_KEY=gsk_your_key_here
 ```
 
 ---
@@ -75,31 +102,28 @@ export ANTHROPIC_API_KEY=your_key_here
 
 ### Step 1 — Build the vector store (run once)
 ```
-python step1_ingest.py
+py -3.11 step1_ingest.py
 ```
-This reads the Excel file, converts each record to a text document,
-generates embeddings using sentence-transformers, and saves everything
-to a local ChromaDB database in ./fo_chroma_db/
-
-To rebuild from scratch:
-```
-python step1_ingest.py --reset
-```
+Reads the Excel file, converts each record to a text document,
+generates embeddings using sentence-transformers, and saves to:
+- fo_faiss.index — the FAISS vector index
+- fo_metadata.json — record documents and metadata
 
 ### Step 2 — Query interactively
 ```
-python step2_query.py
+py -3.11 step2_query.py
 ```
 Opens an interactive prompt. Type any natural language question.
+Type 'exit' to quit.
 
 Or run a single query:
 ```
-python step2_query.py --query "Which family offices in Asia focus on technology?"
+py -3.11 step2_query.py --query "Which family offices in Asia focus on technology?"
 ```
 
 ### Step 3 — Run the demo (5 example queries)
 ```
-python step3_demo.py
+py -3.11 step3_demo.py
 ```
 Runs 5 pre-defined demo queries and saves results to FO_RAG_Demo_Results.txt
 
@@ -110,13 +134,13 @@ Runs 5 pre-defined demo queries and saves results to FO_RAG_Demo_Results.txt
 ```
 User Question
      ↓
-Embed question using all-MiniLM-L6-v2
+Embed question using all-MiniLM-L6-v2 (runs locally)
      ↓
-ChromaDB cosine similarity search → Top 8 most relevant FO records
+FAISS cosine similarity search → Top 8 most relevant FO records
      ↓
 Build prompt: system instructions + retrieved records + question
      ↓
-Claude Sonnet generates grounded answer using only retrieved context
+Llama 3.3 70B (via Groq) generates grounded answer from context only
      ↓
 Answer displayed with source records and relevance scores
 ```
@@ -125,48 +149,70 @@ Answer displayed with source records and relevance scores
 
 ## Files
 
-| File                   | Purpose                                      |
-|------------------------|----------------------------------------------|
-| step1_ingest.py        | Build vector store from Excel dataset        |
-| step2_query.py         | Interactive + single-query interface         |
-| step3_demo.py          | Run 5 demo queries, save results to file     |
-| requirements.txt       | Python dependencies                          |
-| FO_FINAL_DATASET.xlsx  | Source dataset (place in this folder)        |
-| fo_chroma_db/          | Generated by step1 — local vector store      |
-| FO_RAG_Demo_Results.txt| Generated by step3 — demo query results      |
+| File                    | Purpose                                           |
+|-------------------------|---------------------------------------------------|
+| step1_ingest.py         | Build FAISS vector store from Excel dataset       |
+| step2_query.py          | Interactive + single-query interface              |
+| step3_demo.py           | Run 5 demo queries, save results to file          |
+| requirements.txt        | Python dependencies                               |
+| FO FINAL DATASET.xlsx   | Source dataset (place in this folder)             |
+| fo_faiss.index          | Generated by step1 — FAISS vector index           |
+| fo_metadata.json        | Generated by step1 — record documents + metadata  |
+| FO_RAG_Demo_Results.txt | Generated by step3 — demo query results           |
 
 ---
 
 ## Architecture Decisions
 
-**Why ChromaDB?**
-Local, persistent, no API key required. Perfect for a prototype.
-For production, Pinecone or Supabase pgvector would offer better scaling.
+**Why FAISS?**
+Originally ChromaDB was chosen for its ease of use and built-in metadata
+filtering. However ChromaDB's Rust bindings caused DLL load failures on
+Windows across Python 3.11 and 3.14. FAISS (faiss-cpu) from Meta is
+battle-tested, has no such issues, and performs equally well for this
+dataset size. For production at scale, Pinecone or Supabase pgvector
+would be better choices.
 
 **Why all-MiniLM-L6-v2?**
-Runs fully locally — no OpenAI API calls for embeddings.
-Fast (235 records embeds in ~5 seconds), accurate for semantic search,
+Runs fully locally — no API calls for embeddings.
+Fast (236 records embed in under 5 seconds), accurate for semantic search,
 and the model is only ~90MB. For production, text-embedding-3-small
-from OpenAI would give marginally better results.
+from OpenAI would give marginally better semantic precision.
 
 **Why record-as-document chunking?**
 Family office records are intelligence units — splitting them would lose
 context. A query about "AI-focused FOs with high co-invest appetite"
 needs access to both the sector field and the co-invest field simultaneously.
-Record-level chunking keeps that context intact.
+Record-level chunking keeps that context intact. Average document
+length is 986 characters which fits comfortably within embedding limits.
 
 **Why top_k=8?**
-Balances retrieval coverage against prompt size. 8 records at ~400 chars
-each = ~3200 chars of context, well within Claude's context window while
-giving enough records for multi-FO comparison questions.
+Balances retrieval coverage against prompt size. 8 records gives enough
+context for multi-FO comparison questions without exceeding the LLM
+context window.
+
+**Why Groq / Llama 3.3 70B?**
+Free tier with no credit card required. Llama 3.3 70B is highly capable
+for structured intelligence queries and follows grounding instructions well.
+For production, Claude Sonnet or GPT-4o would offer more consistent results.
+
+---
+
+## Challenges and Limitations
+
+- ChromaDB failed on Windows due to Rust/DLL dependency issues — switched to FAISS
+- Python 3.14 incompatibility with torch and sentence-transformers — requires Python 3.11
+- Microsoft Visual C++ Redistributable required for torch on Windows
+- Groq free tier has rate limits — running many queries quickly may hit limits
+- No metadata pre-filtering implemented — all retrieval is pure semantic search
 
 ---
 
 ## What Would Make This Production-Ready
 
 1. Pinecone or Supabase pgvector for hosted, scalable vector storage
-2. Metadata filtering — pre-filter by region/AUM/sector before vector search
+2. Metadata pre-filtering — filter by region/AUM/sector before vector search
 3. Re-ranking with a cross-encoder model for higher precision
 4. Streaming responses for better UX
 5. Query expansion — generate multiple query variants to improve recall
 6. A proper web UI (FastAPI backend + React frontend)
+7. LinkedIn Sales Navigator integration for real-time contact verification
